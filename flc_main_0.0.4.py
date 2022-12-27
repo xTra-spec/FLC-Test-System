@@ -175,8 +175,6 @@ plt.show()
 
 #Komendy dla MSO
 
-#polaczenie przez usb
-#
 
 """
 *CLS
