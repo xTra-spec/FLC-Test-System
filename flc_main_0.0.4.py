@@ -175,9 +175,7 @@ plt.show()
 
 #Komendy dla MSO
 
-
 """
-*CLS
 *IDN?
 *RST
 :SELect:CH2 1
