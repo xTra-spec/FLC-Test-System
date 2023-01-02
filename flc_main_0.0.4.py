@@ -34,7 +34,7 @@ plt.show()
 """
 
 ##################################### Linearity #########################################
-"""
+
 import pyvisa
 import time
 import matplotlib.pyplot as plt
@@ -63,7 +63,7 @@ def mso_channel_selection(channel):
     return
 
 def gen_settings(amplitude, frequency):
-    gen.write('WAVE SQUARE;AMPUNIT VPP;AMPL'+amplitude+';FREQ'+frequency+';OUTPUT ON')
+    gen.write('WAVE SQUARE;AMPUNIT VPP;AMPL '+amplitude+';FREQ '+frequency+';OUTPUT ON')
     return
 
 def mso_measurement():
@@ -86,7 +86,7 @@ measured_gen_vpp = []
 measured_amp_vpp = []
 
 gen_reset()
-gen_settings(vpp, '10000')
+gen_settings(str(vpp), '10000')
 mso_reset()
 mso_channel_selection('CH1')
 mso_channel_selection('CH2')
@@ -94,7 +94,7 @@ mso_measurement_type()
 mso_autoset()
 
 while vpp < 4: # sweep vpp to 5Vpp
-    gen_settings(vpp,'10000')
+    gen_settings(str(vpp),'10000')
     #gen.write("AMPL " + str(vpp))
     if vpp < 4:
         mso_measurement_source('CH1')
@@ -164,9 +164,10 @@ plt.title('Frequency response')
 plt.grid(which='both', linestyle='-', color='grey')
 plt.xticks([10, 100, 1000, 10000], ["10", "100", "1000", "10000"])
 plt.show()
-"""
 
 """
+
+
 #ZASYMULOWAĆ DANE DO WYKRESU FREQUENCY RESPONSE
 #ABY WYKRES DZIALAL, MUSY BYC TYLE SAMO ELEMENTOW NA OSI X I Y
 #DLA CZĘSTOTLIWOŚCI, ZACZYNAM OD 5KHZ I LOGARYTMICZNIE ZWIEKSZAM CZĘSTOTLIWOŚĆ A DOJDĘ DO 1MHZ, POMIAROW POWINNO BYC 1000
