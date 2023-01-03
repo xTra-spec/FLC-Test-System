@@ -62,13 +62,16 @@ def mso_channel_selection(channel):
     mso.write('SELect:'+channel+'1')
     return
 
-def gen_settings(amplitude, frequency):
+def init_gen_settings(amplitude, frequency):
     gen.write('WAVE SQUARE;AMPUNIT VPP;AMPL '+amplitude+';FREQ '+frequency+';OUTPUT ON')
-    return
+    #return
+def gen_settings(amplitude, frequency):
+    gen.write('AMPL '+amplitude+';FREQ '+frequency+';OUTPUT ON')
+    #return
 
 def mso_measurement():
-    mso.query('MEASUrement:IMMed:VALue?')
-    return
+    x = mso.query('MEASUrement:IMMed:VALue?')
+    return x
 def mso_autoset():
     mso.write('AUTOSet EXECute')
     return
@@ -80,36 +83,42 @@ def mso_measurement_source(channel):
     mso.write('MEASUrement:IMMed:SOURCE1'+channel)
     return
 
-vpp = 0.1
+vpp = 1
 step_vpp = 0.1
 measured_gen_vpp = []
 measured_amp_vpp = []
 
 gen_reset()
-gen_settings(str(vpp), '10000')
+init_gen_settings(str(vpp), '10000')
 mso_reset()
 mso_channel_selection('CH1')
 mso_channel_selection('CH2')
+time.sleep(1)
 mso_measurement_type()
+time.sleep(1)
 mso_autoset()
+time.sleep(2)
 
-while vpp < 4: # sweep vpp to 5Vpp
-    gen_settings(str(vpp),'10000')
-    #gen.write("AMPL " + str(vpp))
-    if vpp < 4:
+while vpp < 2: # sweep vpp to 5Vpp
+    gen_settings(str(vpp), '10000')
+    time.sleep(1)      
+    if vpp < 2:
         mso_measurement_source('CH1')
-        x = mso_measurement() #channel 1
+        time.sleep(1)
+        x = mso_measurement()
         x = float(x)
         measured_gen_vpp.append(x)
         print(x)
         mso_measurement_source('CH2')
-        o = mso_measurement()
-        o = float(o)
-        measured_amp_vpp.append(o)
-        print(o)
-
+        time.sleep(1)
+        x = mso_measurement()
+        x = float(x)
+        measured_amp_vpp.append(x)
+        print(x)
     vpp += step_vpp
-     
+    #print(vpp)
+    
+   
 xpoints = np.array([measured_amp_vpp])
 ypoints = np.array([measured_gen_vpp])
 
@@ -175,8 +184,8 @@ plt.show()
 
 
 #Komendy dla MSO
-
 """
+
 *IDN?
 *RST
 :SELect:CH2 1
@@ -212,4 +221,3 @@ time.sleep(2.5)
 print(mso.query('MEASUrement:IMMed:VALue?'))
 
 """
-
